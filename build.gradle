@@ -1,0 +1,54 @@
+apply plugin: 'java'
+
+group = 'com.tooltwist'
+version = '0.99-SNAPSHOT'
+sourceCompatibility = 1.7
+
+
+repositories {
+	ivy {
+		url "file://tmp/repo"
+		layout "maven"
+	}
+	mavenCentral()
+}
+
+
+//----------------------------------------------------------------------
+// Gradle lacks the "provided" dependency so we'll have to add it.
+// http://blog.codeaholics.org/2012/emulating-mavens-provided-scope-in-gradle/
+configurations {
+	provided
+}
+sourceSets {
+    main.compileClasspath += configurations.provided
+    test.compileClasspath += configurations.provided
+    test.runtimeClasspath += configurations.provided
+}
+//eclipse.classpath.plusConfigurations += configurations.provided
+//apply plugin: 'eclipse'
+//----------------------------------------------------------------------
+
+
+dependencies {
+//	compile group: 'com.tooltwist', name: 'tooltwist', version: '0.99-SNAPSHOT'
+//	compile group: 'com.tooltwist', name: 'xdata', version: '0.99-SNAPSHOT'
+	compile group: 'com.tooltwist', name: 'tooltwist', version: '8.1.std-SNAPSHOT', transitive: true
+	compile group: 'com.tooltwist', name: 'ttStd', version: '0.99-SNAPSHOT', transitive: true
+	compile group: 'com.tooltwist', name: 'ttWbd', version: '0.99-SNAPSHOT', transitive: true
+
+	testCompile group: 'junit', name: 'junit', version: '4.+'
+}
+
+
+//----------------------------------------------------------------------
+//	Upload the jar file to the repo
+//
+uploadArchives {
+    repositories {
+	ivy {
+		url "file://tmp/repo"
+		layout "maven"
+	}
+    }
+}
