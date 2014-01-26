@@ -1,10 +1,11 @@
 package tooltwist.ttsec_standaloneDesigner;
 
-import java.beans.DesignMode;
-
 import com.dinaa.xpc.*;
 import com.dinaa.xpc.backend.XpcSecurityImpl;
-import org.apache.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import tooltwist.misc.TtConfig;
 import tooltwist.wbd.DesignerRole;
 
@@ -16,7 +17,7 @@ import tooltwist.wbd.DesignerRole;
 // STD-1  Implement DesignerSecurityPlugin
 public class StandaloneDesignerSecurityPlugin extends XpcSecurityImpl// implements DesignerSecurityPluggin,
 {
-	static Logger logger = Logger.getLogger(StandaloneDesignerSecurityPlugin.class);
+	static Logger logger = LoggerFactory.getLogger(StandaloneDesignerSecurityPlugin.class);
 	public static final String USERTYPE_CUSTOMER = "C"; // coCustomerMaster
 	public static final String USERTYPE_EMPLOYEE = "E"; // coEmployee
 	public static final String USERTYPE_SUPPLIER = "S"; // coSupplierMaster
