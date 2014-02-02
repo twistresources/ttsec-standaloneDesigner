@@ -1,13 +1,33 @@
 apply plugin: 'java'
+apply plugin: 'eclipse'
 
 group = 'com.tooltwist'
-version = '0.99-SNAPSHOT'
+version = '8.3-SNAPSHOT'
 sourceCompatibility = 1.7
 
 
+/*************************************************************************************************
+ *
+ *	Gradle lacks the "provided" dependency of Maven so we'll have to add it.
+ *	https://github.com/spring-projects/gradle-plugins/tree/master/propdeps-plugin
+ */
+buildscript {
+    repositories {
+        maven { url 'http://repo.springsource.org/plugins-release' }
+    }
+    dependencies {
+        classpath 'org.springframework.build.gradle:propdeps-plugin:0.0.4'
+    }
+}
+configure(allprojects) {
+    apply plugin: 'propdeps-eclipse'
+}
+/*
+ *************************************************************************************************/
+
 repositories {
 	ivy {
-		url "file://tmp/repo"
+		url "file:/${localRepo}"
 		layout "maven"
 	}
 	mavenCentral()
@@ -30,14 +50,53 @@ sourceSets {
 //----------------------------------------------------------------------
 
 
-dependencies {
-//	compile group: 'com.tooltwist', name: 'tooltwist', version: '0.99-SNAPSHOT'
-//	compile group: 'com.tooltwist', name: 'xdata', version: '0.99-SNAPSHOT'
-	compile group: 'com.tooltwist', name: 'tooltwist', version: '8.1.std-SNAPSHOT', transitive: true
-	compile group: 'com.tooltwist', name: 'ttStd', version: '0.99-SNAPSHOT', transitive: true
-	compile group: 'com.tooltwist', name: 'ttWbd', version: '0.99-SNAPSHOT', transitive: true
 
-	testCompile group: 'junit', name: 'junit', version: '4.+'
+dependencies {
+	/* Build using standard ToolTwist libraries
+	compile group: 'com.tooltwist', name: 'tooltwist', version: '8.3-SNAPSHOT'
+	compile group: 'com.tooltwist', name: 'xdata', version: '8.3-SNAPSHOT'
+	compile group: 'com.tooltwist', name: 'tooltwist', version: '8.3-SNAPSHOT', transitive: true
+	compile group: 'com.tooltwist', name: 'ttStd', version: '8.3-SNAPSHOT', transitive: true
+	 */
+
+	/* Build using ToolTwist source code
+	 */
+	compile project(':tooltwist')
+	compile project(':ttWbd')
+	compile project(':xdata')
+
+	// Dependancies
+
+	// Use only at compile time, as this API is implemented by Tomcat
+	provided group: 'javax', name: 'javaee-api', version: '6.0'
+
+	// Include only while testing
+	testCompile group: 'junit', name: 'junit', version: '4.8.2'
+}
+
+
+//----------------------------------------------------------------------
+//	Copy extra resources into the jar file
+//
+processResources {
+}
+processResources.dependsOn("copyWebContent")
+processResources.dependsOn("copyConfig")
+processResources.dependsOn("copyWidgets")
+
+task copyWebContent(type: Copy) {
+	from('WebContent')
+	into 'build/classes/main/META-INF/resources'
+}
+
+task copyConfig(type: Copy) {
+    from('config')
+    into 'build/resources/main/META-INF/tooltwist/config'
+}
+
+task copyWidgets(type: Copy) {
+    from('widgets')
+    into 'build/resources/main/META-INF/tooltwist/widgets'
 }
 
 
@@ -47,7 +106,7 @@ dependencies {
 uploadArchives {
     repositories {
 	ivy {
-		url "file://tmp/repo"
+		url "file:/${localRepo}"
 		layout "maven"
 	}
     }
