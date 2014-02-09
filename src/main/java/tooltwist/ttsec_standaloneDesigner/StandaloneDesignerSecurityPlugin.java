@@ -94,8 +94,14 @@ public class StandaloneDesignerSecurityPlugin extends XpcSecurityImpl// implemen
 
 	@Override
 	public boolean hasRole(String role) {
-
-if (1==1)return true;
+		
+		if (role.equals(DesignerRole.DESIGNER_MODE_STD.getRoleCode())){
+logger.debug("Hard coded for not simple mode");
+			return false;
+		}
+if (1==1){
+	return true;
+}
 		int level = 1;
 
 		
