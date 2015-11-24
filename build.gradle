@@ -25,12 +25,11 @@ sourceSets {
 
 dependencies {
 	/* Build using standard ToolTwist libraries
-  compile group: 'com.tooltwist', name: 'xdata', version: '5.+'
    */
-  compile group: 'com.tooltwist', name: 'tooltwist', version: '8.5.0-SNAPSHOT'
-  compile group: 'com.tooltwist', name: 'ttStd', version: '8.5.0-SNAPSHOT'
-  compile group: 'com.tooltwist', name: 'ttWbd', version: '8.5.0-SNAPSHOT'
-  compile group: 'com.tooltwist', name: 'xdata', version: '5.0-SNAPSHOT'
+  compile group: 'com.tooltwist', name: 'tooltwist', version: '8.5-SNAPSHOT'
+  compile group: 'com.tooltwist', name: 'ttStd', version: '8.5-SNAPSHOT'
+  compile group: 'com.tooltwist', name: 'ttWbd', version: '8.5-SNAPSHOT'
+  compile group: 'com.tooltwist', name: 'xdata', version: '8.5-SNAPSHOT'
 
 	/* Build using ToolTwist source code
 	compile project(':tooltwist')
